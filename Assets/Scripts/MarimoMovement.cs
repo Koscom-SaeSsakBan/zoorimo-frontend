@@ -14,6 +14,7 @@ public class MarimoMovement : MonoBehaviour
 
     void Update()
     {
+        /*
 
         if (time < 1f)
         {
@@ -37,7 +38,7 @@ public class MarimoMovement : MonoBehaviour
 
         time += Time.deltaTime;
 
-
+        */
     }
     
 

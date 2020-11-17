@@ -5,6 +5,15 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+[System.Serializable]
+class ResData
+{
+    public string id;
+    public string username;
+    public string email;
+    public string name;
+
+}
 public class StartGame : MonoBehaviour
 {
     public InputField inputID;
@@ -29,8 +38,8 @@ public class StartGame : MonoBehaviour
 
     public void OnClickStartBtn()
     {
-        inputID = GetComponent<InputField>();
-        inputPW = GetComponent<InputField>();
+        inputID = GameObject.Find("InputID").GetComponent<InputField>();
+        inputPW = GameObject.Find("InputPW").GetComponent<InputField>();
 
         id = inputID.text;
         pw = inputPW.text;
@@ -67,7 +76,7 @@ public class StartGame : MonoBehaviour
         formData.Add(new MultipartFormDataSection("username", id));
         formData.Add(new MultipartFormDataSection("input_password", pw));
 
-        UnityWebRequest webRequest = UnityWebRequest.Post("http://15.164.165.118:8000/", formData);
+        UnityWebRequest webRequest = UnityWebRequest.Post("http://52.78.94.149:80/api/v1/users/signin/", formData);
 
         yield return webRequest.SendWebRequest();
 
@@ -77,16 +86,19 @@ public class StartGame : MonoBehaviour
             // pop up??
         }
         else
-        {
+        {          
             Debug.Log("Form upload complete!");
             string result = webRequest.downloadHandler.text;
             Debug.Log("Response: " + result);
+            ResData d = JsonUtility.FromJson<ResData>(result);
 
-            string user_pk = "1";
+            string user_pk = d.id;
+            string user_id = d.username;
+            string user_name = d.name;
+
+            sm = playerStatus.GetComponent<StatusManagerStart>();
             sm.user_pk = user_pk;
-            sm.Call();
-            // DontDestroyOnLoad(PlayerStatus);
-            // SceneManager.LoadScene("GameScene");
+            sm.Call();            
         }
 
     }
