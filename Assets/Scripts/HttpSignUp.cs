@@ -1,9 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
+[System.Serializable]
+class Data
+{
+    public string id;
+    public string username;
+    public string email;
+    public string name;
+
+}
 public class HttpSignUp : MonoBehaviour
 {
 
@@ -11,7 +21,7 @@ public class HttpSignUp : MonoBehaviour
     public InputField inputPW;
     public InputField inputName;
     public InputField inputEmail;
-
+    public GameObject p;
     string id;
     string pw;
     string username;
@@ -28,7 +38,11 @@ public class HttpSignUp : MonoBehaviour
         
     }
 
-    public void RequestHttp()
+    public void GoBack()
+    {
+        SceneManager.LoadScene("StartScene");
+    }
+   /* public void RequestHttp()
     {
         inputID = GameObject.Find("InputID").GetComponent<InputField>();
         inputPW = GameObject.Find("InputPW").GetComponent<InputField>();
@@ -43,7 +57,7 @@ public class HttpSignUp : MonoBehaviour
         Debug.Log("Name: " + username);
         Debug.Log("Email: " + email);
     }
-
+   */
     public void OnClickRequestBtn()
     {
         inputID = GameObject.Find("InputID").GetComponent<InputField>();
@@ -66,7 +80,7 @@ public class HttpSignUp : MonoBehaviour
         formData.Add(new MultipartFormDataSection("input_password", pw));
         formData.Add(new MultipartFormDataSection("email", email));
         
-        UnityWebRequest webRequest = UnityWebRequest.Post("http://15.164.165.118:8000/", formData);
+        UnityWebRequest webRequest = UnityWebRequest.Post("http://52.78.94.149:80/api/v1/users/signup/", formData);
 
         yield return webRequest.SendWebRequest();        
 
@@ -78,7 +92,19 @@ public class HttpSignUp : MonoBehaviour
         {
             Debug.Log("Form upload complete!");
             string result = webRequest.downloadHandler.text;
+            
+            // DownloadHandler handler = webRequest.downloadHandler;
             Debug.Log("Response: " + result);
+
+            Data d = JsonUtility.FromJson<Data>(result);
+
+
+            if (!p.activeSelf)
+            {
+                p.SetActive(true);
+
+            }
+
         }
         
     }

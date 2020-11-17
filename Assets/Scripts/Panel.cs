@@ -9,7 +9,6 @@ public class Panel : MonoBehaviour
 
     public void Start()
     {
-        Debug.Log("헬로월드");
         p.SetActive(false);
 
     }

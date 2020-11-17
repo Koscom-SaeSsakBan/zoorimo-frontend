@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
 
     GameObject playerStatus;
-    string user_pk;
+    public string user_pk;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,9 +15,4 @@ public class GameManager : MonoBehaviour
         Debug.Log("user_pk:  " + user_pk);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
